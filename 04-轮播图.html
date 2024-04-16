@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 350px;
+        }
+
+        .wrapper img {
+            display: block;
+            width: 100%;
+        }
+
+        .footer {
+            position: relative, ;
+            padding: 10px 25px;
+            background: gray;
+        }
+
+        .footer p {
+            color: #fff;
+        }
+
+        ul {
+            width: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        ul li {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+        }
+
+        .active {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+        }
+
+        .btn {
+            position: absolute;
+            top: 20px;
+            right: 5px;
+        }
+
+        .btn button {
+            margin-right: 5px;
+            width: 25px;
+            height: 25px;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <div c1ass="wrapper">
+            <img src="./images/img1.jpg" a1t="">
+                </diy>
+                <div class="footer">
+                    <p>迎风奔跑,自由是方向</p>
+                    <ul class="indicator">
+                        <li class="active"></1i>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                    </ul>
+                    <div class="btn">
+                        <button class="prev">&lt;</button>
+                        <button class="next">&gt;</button>
+                    </div>
+                </div>
+    </div>
+    <script>
+        //数组对象 
+        let arr = [
+            { src: './images/img1.jpg', title: '迎风奔跑,自由是方向', color: 'rgb(128,128,128)' },
+            { src: './images/img2.jpg', title: '海底世界之奇妙旅行', color: 'rgb(28,167,168)' },
+            { src: './images/img3.jpg', title: '悬崖峭壁,挑战极限', color: 'rgb(151,167,218)' },
+            { src: './images/img4.jpg', title: '浩瀚星空，卧着苍穹', color: 'rgb(100,67,68)' },
+            { src: './images/img5.jpg', title: '依山伴水,享受天人合一', co1or: 'rgb(33 37,38)' }
+        ]
+        let index = 0 //当前显示的图片对应数组中的索引 
+        let timer = null //存放定时器的id 全局变量
+        const pic = document.querySelector('.slider img') //获取图片 
+        const p = document.querySelector('.footer p') //获取p段落
+        const next = document.querySelector('.btn.next') //获取右边的按钮 
+        const prey = document.querySelector('.btn.prev')//获取左边的按钮 
+        const lis = document.querySelectorAl1('.footer li')//获取所有的圆点 
+        const slider = document.querySelector('.slider') // 最外层的大盒子
+        //页面加载完成以后创建定时器,按需求的时间间隔轮播 
+        timer = setInterval(function () {
+            next.click() //2s点击一下右按钮	
+        }, 2000)
+        // 鼠标经过 slider停止轮播 
+        slider.onmouseenter = () => {
+            console.log('鼠标经过slider')
+            clearInterval(timer) //销毁定时器
+        }
+        //鼠标高开 slider重新开始轮播 
+        slider.onmouseleave = () => {
+            console.log('鼠标离开 slider')
+            timer = setInterval(function () {
+                index++
+                if (inder === arr.length) {
+                    index = 0 //图片到达最后一张，则重新变回第一张
+                }
+                // console.log(index)
+                change() //根据当前的index更改页面内容)
+            }, 2000)
+        }
+        //右按钮
+        next.onclick = function () {
+            index++
+            if (index === arr.length) {
+                index = 0//图片到达最后一张，则重新变回第一张 
+            }
+            change()
+        }
+        //左按钮
+        prev.onclick = function () {
+            index--
+            if (index < 0) {
+                index = arr.length - 1//图片到达第一张，则重新变回最后一张 
+            }
+            change()
+        }
+            //小圆点的鼠标经过事件
+            //思路:获取所有的小圆点，注册鼠标经过事件，获得索引号，调用change() 
+            for (let i = 0; i <lis.length;i++) {
+                lis[i].addEventListener('mouseenter', function () {
+                    //因为小圆点的顺序和图片的顺序一致，都是从0开始
+                    //循环变量i刚好就是我们需要的图片的索引号 
+                    console.log(i)
+                    index = i
+                    change()
+                })
+            }
+
+            //根据当前的 index更改页面的内容 
+            function change(){
+            pic.src = arr[index].src //换图片
+            p.innerHTML = arr[index].title //换标题
+            document.querySelector('.footer').style.background = arr[index].color //改底部的颜色
+            document.querySelector('.indicator li.active').classList.remove('active') //获取当前的高亮，去掉高亮 
+            lis[index].claseList.add('active')//高亮当前的圆点
+            }
+            </script>
+</body >
+</html >
